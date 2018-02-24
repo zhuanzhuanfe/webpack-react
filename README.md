@@ -4,10 +4,10 @@
 ## 前言
 
 * 遵循 vue 脚手架的使用方法
-* 兼容单页面及多页面应用，兼容的[项目结构](https://github.com/zhuanzhuanfe/webpack-react#项目结构)如下
+* 兼容单页面及多页面应用，兼容的[项目结构](https://github.com/zhuanzhuanfe/webpack-react#demo%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84)如下
 * 兼容ejs模版语法
 
-## 使用步骤
+## 使用步骤
 主要针对在已有项目中初始化
 ### 安装
 ````bash
@@ -15,7 +15,7 @@ $ npm i -D webpack-react
 # 或
 $ yarn add webpack-react
 ````
-### 初始化-已有项目
+### 初始化-已有项目
 ````bash
 $ node_modules/webpack-react/bin/start
 ````
