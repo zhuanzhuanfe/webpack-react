@@ -1,0 +1,40 @@
+/*
+ * 变量
+ */
+// 颜色
+$white: #fff;
+$black: #000;
+// $gray: #d8d8d8;
+$gray: #f4f3f4;
+$gray-light: #f2f3f6;
+$red: #e7563c;
+$orange: #fd7d30;
+$orange-light: #fcefeb;
+$blue: #4a90e2;
+
+// 背景
+$bg: #f8f8f8;
+
+// 字体颜色
+$fn-col-01: #504a4d;
+$fn-col-02: #969696;
+
+// 边框颜色
+$bd-color: #eaeaea;
+$bd-color-02: #e7e7e7;
+
+/*
+ * 函数
+ */
+// px转rem
+@function pxtorem($px) {
+  @if $px==0 {
+    @return 0;
+  }
+  @if $px <=2 and $px > 0 {
+    @return 1px;
+  }
+  @else {
+    @return $px / ($px * 0 + 1) / 40 * 1rem;
+  }
+}

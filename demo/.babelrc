@@ -1,0 +1,22 @@
+{
+  "presets": [
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": [
+          "> 1%", 
+          "last 4 versions", 
+          "Firefox ESR", 
+          "not ie < 9"
+        ]
+      }
+    }],
+    "react",
+    "stage-2",
+    "flow"
+  ],
+  "plugins": [
+    "transform-runtime",
+    "transform-object-assign"
+  ]
+}

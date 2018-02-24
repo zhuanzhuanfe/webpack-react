@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const chalk = require('chalk');
+const exists = fs.existsSync;
+const inquirer = require('inquirer');
+const async = require('async');
+const cpFile = require('cp-file');
+const rm = require('rimraf').sync;
+
+const pwd = process.cwd();
+const dir = path.join(pwd, 'webpack-react');
+if(exists(dir)) {
+  rm(dir);
+} 
+fs.mkdirSync(path.join(pwd, 'webpack-react'));
+
+async.eachSeries([
+  path.join('config','index.js'), 
+  path.join('build','index.js'), 
+  path.join('build','dev.js'), 
+  path.join('build','build.js')], (v, next) => {
+    cpFile(path.join(pwd, 'node_modules', 'webpack-react', 'temp', v), path.join(pwd, 'webpack-react', v)).then(() => {
+      next();
+    });
+}, () => {
+  console.log('拷贝完成');
+})

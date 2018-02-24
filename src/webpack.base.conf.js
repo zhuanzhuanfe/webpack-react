@@ -7,15 +7,11 @@ const utils = require('./utils')
 const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
 const pages = utils.getEntry([resolve('template/**/*.{ejs, html, htm}')]);
 
-// const HappyPack = require('happypack')
-// const os = require('os')
-// const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
-// console.log(mixin(config.base.entry, entries));
-// console.log(entries);
+// 多页面应用情况下删除入口文件
 if(pages['index'] && entries['index']) {
   delete config.base.entry['app'];
 }
-// console.log(mixin(config.base.entry, entries));
+
 module.exports = {
     context:resolve(),
     entry: mixin(config.base.entry, entries),
@@ -79,14 +75,5 @@ module.exports = {
           loader: "ejs-compiled-loader"
         }
       ]
-    },
-    // plugins: [
-    //   new HappyPack({
-    //     id: 'happybabel',
-    //     loaders: ['babel-loader'],
-    //     threadPool: happyThreadPool,
-    //     verbose: true,
-    //     debug: false
-    //   })
-    // ]
+    }
   }

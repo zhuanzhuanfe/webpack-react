@@ -12,20 +12,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-// const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const PerfWebpackPlugin = require('../../perf-webpack-plugin');
 const pages = utils.getEntry([resolve('template/**/*.{ejs, html, htm}')]);
-// console.log(pages);
 
 const env =  require('../config/prod.env')
 const webpackConfig = {
-  // resolve: {
-  //   alias: {
-  //     'vue': 'vue/dist/vue.min.js'
-  //   }
-  // },
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,

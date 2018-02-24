@@ -1,0 +1,6 @@
+# 多页面应用时使用该文件夹，需配合template文件夹
+
+if
+   pages 和 template 中都存在相同文件则为多页面应用
+else
+   单页面应用

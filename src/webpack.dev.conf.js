@@ -20,10 +20,7 @@ let webpackDevConfig = {
       extract: config.base.cssExtract || false
     })
   },
-  // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
-
-  // these devServer options should be customized in /config/index.js
   devServer: {
     clientLogLevel: 'warning',
     historyApiFallback: true,
@@ -50,9 +47,8 @@ let webpackDevConfig = {
       'process.env': require('../config/dev.env')
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
+    new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    // https://github.com/ampedandwired/html-webpack-plugin
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       allChunks: false,
@@ -64,7 +60,6 @@ let webpackDevConfig = {
 }
 
 const htmlConf = (page = '', pathname = 'app') => {
-  // console.log(page);
   const conf = {
     filename: `${pathname === 'app' ? 'index' : pathname}.html`,
     template: page || (exists(resolve('index.ejs')) ? resolve('index.ejs') : resolve('index.html')), // 模板路径

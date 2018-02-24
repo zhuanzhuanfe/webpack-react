@@ -16,11 +16,9 @@ let getLocalPath = () => {
 exports.dev = async(function* () {
   let devWebpackConfig = merge(this.baseWebpackConfig, this.devWebpackConfig)
   let utils = require('./src/utils')
-  // console.log(devWebpackConfig);
   return new Promise((resolve, reject) => {
     portfinder.basePort = process.env.PORT || global._WEBPACK_CONFIG.dev.port
     portfinder.getPort((err, port) => {
-      // console.log('到这了吗');
       if (err) {
         reject(err)
       } else {
@@ -42,7 +40,6 @@ exports.dev = async(function* () {
 
 exports.build = async(function* (cfg) {
   let prod = require('./src/build')
-  // console.log(this.prodWebpackConfig);
   prod(merge(this.baseWebpackConfig, this.prodWebpackConfig, cfg))
 })
 
@@ -54,10 +51,7 @@ module.exports = async(function* (config) {
   }
   // 获取项目package
   global._WEBPACK_PKG = require(global._WEBPACK_RESOLVE('package.json'))
-  // console.log(require('config/index.js'))
   global._WEBPACK_CONFIG = require('./config/index.js')(config)
-  // console.log(global._WEBPACK_CONFIG.base.entry);
-
   exports.baseWebpackConfig = require('./src/webpack.base.conf.js')
   exports.devWebpackConfig = require('./src/webpack.dev.conf.js')
   exports.prodWebpackConfig = require('./src/webpack.prod.conf.js')

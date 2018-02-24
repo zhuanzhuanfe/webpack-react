@@ -1,0 +1,38 @@
+{
+  "name": "示例",
+  "version": "1.0.0",
+  "description": "webpack打包工具模版示例",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "webpack-dev-server --inline --disable-host-check --public --config build/dev.js",
+    "build": "cross-env NODE_ENV=production node build/build.js",
+    "builduploadtest": "cross-env OFFLINE_ENV=test node build/build.js",
+    "proxy": "node proxy/index.js",
+    "flow": "flow"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "history": "^4.7.2",
+    "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "webpack-react": "^1.0.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 4 versions",
+    "Firefox ESR",
+    "not ie < 9"
+  ]
+}
