@@ -1,4 +1,4 @@
-# webpack-react
+# zz-webpack-react
 > react版`webpack`打包工具，主要提供公共`webpack`配置，快速接入最新最优`webpack`配置
 
 ## 前言
@@ -11,13 +11,13 @@
 主要针对在已有项目中初始化
 ### 安装
 ````bash
-$ npm i -D webpack-react
+$ npm i -D zz-webpack-react
 # 或
-$ yarn add webpack-react
+$ yarn add zz-webpack-react
 ````
 ### 初始化-已有项目
 ````bash
-$ node_modules/webpack-react/bin/start
+$ node_modules/zz-webpack-react/bin/start
 ````
 
 执行命令：
@@ -32,7 +32,7 @@ $ cross-env NODE_ENV=production node webpack-react/build/build.js
 ### 初始化-新项目
 
 ````bash
-$ node_modules/webpack-react/bin/init
+$ node_modules/zz-webpack-react/bin/init
 ````
 #### demo目录结构
 ```file
