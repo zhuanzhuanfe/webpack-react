@@ -1,0 +1,65 @@
+const path = require('path')
+const merge = require('webpack-merge')
+const {wrap:async} = require('co')
+const npmRoot = require('npm-root')
+const portfinder = require('portfinder')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+// 获取项目目录
+let getLocalPath = () => {
+  return new Promise((resolve, reject) => {
+    npmRoot((err, npmPath) => {
+      resolve(path.join(npmPath, '../'))
+    })
+  })
+}
+
+exports.dev = async(function* () {
+  let devWebpackConfig = merge(this.baseWebpackConfig, this.devWebpackConfig)
+  let utils = require('./src/utils')
+  // console.log(devWebpackConfig);
+  return new Promise((resolve, reject) => {
+    portfinder.basePort = process.env.PORT || global._WEBPACK_CONFIG.dev.port
+    portfinder.getPort((err, port) => {
+      // console.log('到这了吗');
+      if (err) {
+        reject(err)
+      } else {
+        process.env.PORT = port
+        devWebpackConfig.devServer.port = port
+        devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
+          compilationSuccessInfo: {
+            messages: [`你的应用运行在: ${global._WEBPACK_CONFIG.dev.https ? 'https' : 'http'}://${global._WEBPACK_CONFIG.dev.host}:${port}${global._WEBPACK_CONFIG.dev.assetsPublicPath}`],
+          },
+          onErrors: global._WEBPACK_CONFIG.dev.notifyOnErrors
+          ? utils.createNotifierCallback()
+          : undefined
+        }))
+        resolve(devWebpackConfig)
+      }
+    })
+  })
+})
+
+exports.build = async(function* (cfg) {
+  let prod = require('./src/build')
+  // console.log(this.prodWebpackConfig);
+  prod(merge(this.baseWebpackConfig, this.prodWebpackConfig, cfg))
+})
+
+module.exports = async(function* (config) {
+  let localPath = yield getLocalPath()
+  // 设置全局目录函数
+  global._WEBPACK_RESOLVE = (dir = '') => {
+    return path.join(localPath, dir)
+  }
+  // 获取项目package
+  global._WEBPACK_PKG = require(global._WEBPACK_RESOLVE('package.json'))
+  // console.log(require('config/index.js'))
+  global._WEBPACK_CONFIG = require('./config/index.js')(config)
+  // console.log(global._WEBPACK_CONFIG.base.entry);
+
+  exports.baseWebpackConfig = require('./src/webpack.base.conf.js')
+  exports.devWebpackConfig = require('./src/webpack.dev.conf.js')
+  exports.prodWebpackConfig = require('./src/webpack.prod.conf.js')
+  return exports
+})
