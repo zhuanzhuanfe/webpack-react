@@ -8,7 +8,6 @@
 * 兼容ejs模版语法
 
 ## 使用步骤
-主要针对在已有项目中初始化
 ### 安装
 ````bash
 $ npm i -D zz-webpack-react
