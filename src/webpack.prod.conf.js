@@ -183,14 +183,6 @@ if (config.build.imagemin) {
   )
 }
 
-// 开启badjs异常上报
-if(config.build.badjs && config.build.badjs > 0) {
-  const BadjsWebpackPlugin = require('@zz-yy/badjs-webpack-plugin')
-  // TODO 监控erro 上线打开，测试注释掉
-  webpackConfig.plugins.push(new BadjsWebpackPlugin({id: config.build.badjs}))
-  webpackConfig.output.crossOriginLoading = 'anonymous'
-}
-
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
   webpackConfig.plugins.push(
