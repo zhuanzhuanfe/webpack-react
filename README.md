@@ -15,7 +15,7 @@ $ npm i -D webpack-react
 # 或
 $ yarn add webpack-react
 ````
-### 初始化-已有项目
+### 初始化-已有项目
 ````bash
 $ node_modules/webpack-react/bin/start
 ````
