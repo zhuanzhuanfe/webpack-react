@@ -6,25 +6,17 @@ const chalk = require('chalk');
 const exists = fs.existsSync;
 const inquirer = require('inquirer');
 const async = require('async');
-const cpFile = require('cp-file');
+const cpFile = require('cpr');
 const rm = require('rimraf').sync;
 
 const pwd = process.cwd();
 const dir = path.join(pwd, 'webpack-react-demo');
-if(exists(dir)) {
+if (exists(dir)) {
   rm(dir);
-} 
+}
 fs.mkdirSync(path.join(pwd, 'webpack-react-demo'));
 
-async.eachSeries([
-  path.join('config','index.js'), 
-  path.join('build','index.js'), 
-  path.join('build','dev.js'), 
-  path.join('build','build.js')], (v, next) => {
-    cpFile(path.join(pwd, 'node_modules', 'webpack-react', 'demo'), path.join(pwd, 'webpack-react-demo')).then(() => {
-      next();
-    });
-}, () => {
+cpFile(path.join(pwd, 'node_modules', 'zz-webpack-react', 'demo'), path.join(pwd, 'webpack-react-demo'), () => {
   console.log(`# ${chalk.green('初始化项目模版完成')}`);
   console.log('# ======================');
   console.log();
@@ -32,4 +24,4 @@ async.eachSeries([
   console.log();
   console.log(`   cd webpack-react-demo`);
   console.log(`   npm run dev`);
-})
+});
