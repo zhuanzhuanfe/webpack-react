@@ -24,6 +24,7 @@ $ node_modules/webpack-react/bin/start
 ````bash
 # dev命令，依赖全局的 webpack及webpack-dev-server工具
 $ webpack-dev-server --inline --progress --disable-host-check --public --config webpack-react/build/dev.js
+
 # build命令, 环境变量设置为：NODE_ENV=production，推荐使用cross-env，可以兼容mac和windows
 $ node webpack-react/build/build.js
 $ cross-env NODE_ENV=production node webpack-react/build/build.js
