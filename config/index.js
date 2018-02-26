@@ -17,7 +17,7 @@ module.exports = (config) => {
       https: false,
       // Paths
       assetsSubDirectory: 'static',
-      assetsPublicPath:  `/Mzhuanzhuan/${global._WEBPACK_PKG.name}/`,
+      assetsPublicPath:  '',
       proxyTable: {},
       host: 'localhost', 
       port: 8080, 
@@ -37,7 +37,7 @@ module.exports = (config) => {
       // Paths
       assetsRoot: resolve('/dist'),
       assetsSubDirectory: 'static',
-      assetsPublicPath: `https://${config.build.staticCdn || 'img.static.com.cn'}/zhuanzhuan/${global._WEBPACK_PKG.name}/`,
+      assetsPublicPath: `https://${config.build.staticCdn || config.dev.host + ':' + config.dev.port}`,
       productionSourceMap: true,
       devtool: '#source-map',
       productionGzip: false,

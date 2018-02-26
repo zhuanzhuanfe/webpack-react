@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const vConsolePlugin = require('vconsole-webpack-plugin')
 const resolve = global._WEBPACK_RESOLVE
+const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
 const pages = utils.getEntry([resolve('template/**/*.{ejs, html, htm}')]);
 
 let webpackDevConfig = {
@@ -69,20 +70,23 @@ const htmlConf = (page = '', pathname = 'app') => {
   };
   return conf;
 }
-const listKeys = Object.keys(pages);
-const listPages = Object.values(pages);
-if(listKeys.length) {
-  if(listKeys.length === 1 && !exists(resolve(`src/pages/${listKeys[0]}.jsx`))) {
-    webpackDevConfig.plugins.push(new HtmlWebpackPlugin(htmlConf(listPages[0])));
-  } else {
+let mutiPage = false;
+const entriesKeys = Object.keys(entries);
+Object.keys(pages).every(v => {
+  if(entriesKeys.indexOf(v) >= 0) {
+    mutiPage = true;
+    return false;
+  }
+  return true;
+})
+if(entries && entriesKeys.length && mutiPage) {
     for (let [pathname, page] of utils.entries(pages)) {
       if (exists(resolve(`src/pages/${pathname}.jsx`))) {
         webpackDevConfig.plugins.push(new HtmlWebpackPlugin(htmlConf(page, pathname)));
       }
     }
-  }
 } else {
-  webpackDevConfig.plugins.push(new HtmlWebpackPlugin(htmlConf()));
+  webpackDevConfig.plugins.push(new HtmlWebpackPlugin(htmlConf(pages['index'])));
 }
 
 module.exports = webpackDevConfig;

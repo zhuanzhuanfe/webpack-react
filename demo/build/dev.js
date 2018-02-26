@@ -12,5 +12,5 @@ module.exports = webpack.then(res => {
 
   // 或者直接修改配置
   res.devWebpackConfig.devtool = false;
-  res.dev()
+  return res.dev()
 })

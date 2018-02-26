@@ -14,6 +14,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
 const pages = utils.getEntry([resolve('template/**/*.{ejs, html, htm}')]);
 
 const env =  require('../config/prod.env')
@@ -84,15 +85,7 @@ const webpackConfig = {
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: resolve('static'),
-        to: config.build.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
+    new webpack.optimize.ModuleConcatenationPlugin()
   ]
 }
 
@@ -114,6 +107,7 @@ const htmlConf = (page = '', pathname = 'app') => {
   const conf = {
     filename: `${config.build.web}/${pathname === 'app' ? 'index' : pathname}.html`,
     template: page || (exists(resolve('index.ejs')) ? resolve('index.ejs') : resolve('index.html')), // 模板路径
+    inlineSource: inlineRegExp || '',
     inject: true, // js插入位置
     chunksSortMode: 'dependency',
     chunks: ['manifest', 'vendor', pathname],
@@ -124,25 +118,27 @@ const htmlConf = (page = '', pathname = 'app') => {
       removeAttributeQuotes: true
     }
   };
-
-  if(inlineRegExp) conf.inlineSource = inlineRegExp;
   // console.log(conf);
   return conf;
 }
-const listKeys = Object.keys(pages);
-const listPages = Object.values(pages);
-if(listKeys.length) {
-  if(listKeys.length === 1 && !exists(resolve(`src/pages/${listKeys[0]}.jsx`))) {
-    webpackConfig.plugins.push(new HtmlWebpackPlugin(htmlConf(listPages[0])));
-  } else {
+
+let mutiPage = false;
+const entriesKeys = Object.keys(entries);
+Object.keys(pages).every(v => {
+  if(entriesKeys.indexOf(v) >= 0) {
+    mutiPage = true;
+    return false;
+  }
+  return true;
+})
+if(entries && entriesKeys.length && mutiPage) {
     for (let [pathname, page] of utils.entries(pages)) {
       if (exists(resolve(`src/pages/${pathname}.jsx`))) {
         webpackConfig.plugins.push(new HtmlWebpackPlugin(htmlConf(page, pathname)));
       }
     }
-  }
 } else {
-  webpackConfig.plugins.push(new HtmlWebpackPlugin(htmlConf()));
+  webpackConfig.plugins.push(new HtmlWebpackPlugin(htmlConf(pages['index'])));
 }
 // 内联资源
 webpackConfig.plugins.push(new HtmlWebpackInlineSourcePlugin());
@@ -180,6 +176,19 @@ if (config.build.imagemin) {
   const ImageminPlugin = require('imagemin-webpack-plugin').default
   webpackConfig.plugins.push(
     new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i })
+  )
+}
+
+if(exists(resolve('static'))) {
+  // copy custom static assets
+  webpackConfig.plugins.push(
+    new CopyWebpackPlugin([
+      {
+        from: resolve('static'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*']
+      }
+    ])
   )
 }
 
