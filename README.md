@@ -1,4 +1,4 @@
-# zz-webpack-react
+# zz-webpack-react ![version](https://img.shields.io/badge/version-1.0.6-blue.svg?style=flat-square)
 > react版`webpack`打包工具，主要提供公共`webpack`配置，快速接入最新最优`webpack`配置
 
 ## 前言
