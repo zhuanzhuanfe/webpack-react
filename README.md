@@ -3,9 +3,30 @@
 
 ## 前言
 
-* 遵循 vue 脚手架的使用方法
-* 兼容单页面及多页面应用，兼容的[项目结构](https://github.com/zhuanzhuanfe/webpack-react#demo%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84)如下
-* 兼容ejs模版语法
+* 目录结构及webpack配置修改遵循vue-cli生成模版的用法
+* 兼容 ejs 模版语法
+* 兼容单页面及多页面应用，简单的目录结构如下：
+````file
+// 多页面应用
+my-project
+  |__ src
+  |    |__ pages // 存放页面入口，用于多页面应用中
+  |    |     |__ detail.jsx // 例如，详情页
+  |    |     |__ order.jsx  // 例如，订单页
+  |    |__ app.jsx // 入口文件
+  |__ template  // 存放模版文件
+  |    |__ common // 公共模版
+  |    |__ detail.ejs  //详情页模版文件
+  |    |__ order.ejs  //订单页模版文件
+
+// 单页面应用
+my-project
+  |__ src
+  |    |__ app.jsx // 入口文件
+  |__ template  // 存放模版文件
+  |    |__ common // 公共模版
+  |    |__ index.ejs  // 项目模版
+````
 
 ## 使用步骤
 ### 安装
@@ -15,11 +36,13 @@ $ npm i -D zz-webpack-react
 $ yarn add zz-webpack-react
 ````
 ### 初始化-已有项目
+在当前目录中生成配置文件
+
 ````bash
 $ node_modules/zz-webpack-react/bin/start
 ````
 
-执行命令：
+#### 执行命令
 ````bash
 # dev命令，依赖全局的 webpack及webpack-dev-server工具
 $ webpack-dev-server --inline --progress --disable-host-check --public --config webpack-react/build/dev.js
@@ -29,11 +52,12 @@ $ node webpack-react/build/build.js
 $ cross-env NODE_ENV=production node webpack-react/build/build.js
 ````
 ### 初始化-新项目
-
+在当前目录中生成新项目模版
 ````bash
 $ node_modules/zz-webpack-react/bin/init
 ````
-#### demo目录结构
+demo目录结构如下：
+
 ```file
 my-project
   |__ build         // webpack使用
@@ -61,7 +85,14 @@ my-project
   |__ package.json  // 项目配置文件
   |__ README.md     // 项目说明使用文档
 ```
+#### 执行命令
 
+````bash
+# 开发
+$ npm run dev
+# 打包
+$ npm run build
+````
 ## webpack动态修改
 
 主要是执行webpack功能及动态修改webpack配置
