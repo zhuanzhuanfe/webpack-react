@@ -138,12 +138,24 @@ module.exports = {
 }
 ```
 
+### 开放接口
+
+| 参数  | 类型  | 备注 |
+|:------------- |:---------------:| -------------:|
+| baseWebpackConfig | object | 公共webpack配置，可修改 |
+| devWebpackConfig | object | 开发环境webpack配置，可修改 |
+| prodWebpackConfig | object | 生产环境webpack配置，可修改 |
+| dev | function | 开发环境使用 |
+| build | function | 生产环境使用 |
+
+* 本项目下虽然所有的webpack都可以替换成以前各个项目自己的配置文件，但为了统一性，不建议完全替换配置文件，应该遵循本插件配置文件规则
+
 ### 引入webpack插件
 路径：`build/index.js`
 
 ````javascript
 // 引入 webpack 打包工具
-let webpackVue = require('webpack-react')
+let webpackVue = require('zz-webpack-react')
 // webpack公共配置
 let config = require('../config/index.js')
 module.exports = webpackVue(config).then(res => {
@@ -182,7 +194,7 @@ module.exports = webpack.then(res => {
     // 可动态修改开发环境webpack配置，例如
     res.devWebpackConfig.devtool = false
     // 也可使用 webpack-merge 进行配置合并
-    return res.dev()
+    res.dev()
 })
 ````
 ### build模式
@@ -201,13 +213,13 @@ let merge = require('webpack-merge')
 let webpack = require('./index')
 module.exports = webpack.then(res => {
   // 自定义build配置
-    let build = {
-      plugins: [
-        new webpack.optimize.ModuleConcatenationPlugin()
-      ]
-    }
-    // 与默认配置合并
-    res.prodWebpackConfig = merge(res.prodWebpackConfig, build)
+  let build = {
+    plugins: [
+      new webpack.optimize.ModuleConcatenationPlugin()
+    ]
+  }
+  // 与默认配置合并
+  res.prodWebpackConfig = merge(res.prodWebpackConfig, build)
   res.build()
 })
 ```

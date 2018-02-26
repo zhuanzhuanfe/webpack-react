@@ -1,6 +1,6 @@
 {
   "name": "zz-webpack-react",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "webpack打包工具React版",
   "main": "index.js",
   "bin": {
@@ -21,6 +21,8 @@
   "homepage": "https://github.com/zhuanzhuanfe/webpack-react/master#README",
   "author": "yuanxiaolong@zhuanzhuan.com",
   "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "assign-deep": "0.4.6",
     "async": "^2.6.0",
     "babel-cli": "6.26.0",
