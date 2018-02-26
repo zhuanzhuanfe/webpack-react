@@ -35,7 +35,7 @@ module.exports = (config) => {
     build: mixin({
       web: 'webserver',
       // Paths
-      assetsRoot: resolve('/dist'),
+      assetsRoot: resolve('dist'),
       assetsSubDirectory: 'static',
       assetsPublicPath: `https://${config.build.staticCdn || config.dev.host + ':' + config.dev.port}`,
       productionSourceMap: true,
