@@ -1,4 +1,9 @@
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
+*/*/*/.DS_Store
 webpack-react/
 webpack-react-demo/
 node_modules/
 .vscode/
+package-lock.json

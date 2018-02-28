@@ -5,7 +5,7 @@ const config = global._WEBPACK_CONFIG
 const resolve =  global._WEBPACK_RESOLVE
 const utils = require('./utils')
 const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
-const pages = utils.getEntry([resolve('template/**/*.{ejs, html, htm}')]);
+const pages = utils.getEntry([resolve('template/**/*.ejs'), resolve('template/**/*.html'), resolve('template/**/*.htm')]);
 
 // 多页面应用情况下删除入口文件
 if(pages['index'] && entries['index']) {

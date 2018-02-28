@@ -11,7 +11,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const vConsolePlugin = require('vconsole-webpack-plugin')
 const resolve = global._WEBPACK_RESOLVE
 const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
-const pages = utils.getEntry([resolve('template/**/*.{ejs, html, htm}')]);
+const pages = utils.getEntry([resolve('template/**/*.ejs'), resolve('template/**/*.html'), resolve('template/**/*.htm')]);
 
 let webpackDevConfig = {
   module: {
@@ -39,6 +39,7 @@ let webpackDevConfig = {
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
+    disableHostCheck: true, // host检查
     watchOptions: {
       poll: config.dev.poll,
     }

@@ -15,7 +15,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
-const pages = utils.getEntry([resolve('template/**/*.{ejs, html, htm}')]);
+const pages = utils.getEntry([resolve('template/**/*.ejs'), resolve('template/**/*.html'), resolve('template/**/*.htm')]);
 
 const env =  require('../config/prod.env')
 const webpackConfig = {
@@ -39,11 +39,9 @@ const webpackConfig = {
       dry: false,           
       watch: true
     }),
-    // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    // UglifyJs do not support ES6+, you can also use babel-minify for better treeshaking: https://github.com/babel/minify
     new webpack.optimize.UglifyJsPlugin({
       parallel: {
         cache: true,
@@ -66,25 +64,16 @@ const webpackConfig = {
       sourceMap: config.build.productionSourceMap
     }),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh|en/),
-    // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
-      // set the following option to `true` if you want to extract CSS from
-      // codesplit chunks into this main css file as well.
-      // This will result in *all* of your app's CSS being loaded upfront.
       allChunks: false,
     }),
-    // Compress extracted CSS. We are using this plugin so that possible
-    // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
       cssProcessorOptions: config.build.productionSourceMap
       ? { safe: true, map: { inline: false } }
       : { safe: true }
     }),
-    
-    // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
-    // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin()
   ]
 }
@@ -100,7 +89,6 @@ if(inline) {
   if(regRxpArr.length) {
     inlineRegExp = new RegExp(`${regRxpArr.join('|')}$`)
   }
-  // console.log(inlineRegExp);
 }
 
 const htmlConf = (page = '', pathname = 'app') => {
@@ -118,7 +106,6 @@ const htmlConf = (page = '', pathname = 'app') => {
       removeAttributeQuotes: true
     }
   };
-  // console.log(conf);
   return conf;
 }
 

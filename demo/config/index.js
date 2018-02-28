@@ -21,10 +21,10 @@ module.exports = {
       vconsole: true // 开启调试模式，默认关闭，true/false
     },
     build:{
+      web: 'webserver',
       staticCdn: 'img.static.com.cn', // 静态资源域名
       bundleAnalyzerReport: false, // 开启代码分析报告功能，默认关闭，true/false，也可使用命令 npm run build --report
       productionSourceMap: true,   // 开启生成sourcemap功能，true/false
-      index: path.resolve(__dirname, '../dist/webserver/index.html'), // 生成的index.html文件存放目录
       assetsRoot: path.resolve(__dirname, '../dist'), // 打包生成的文件存放目录
       imagemin: true, // 开启图片压缩， true/false
       inline:['app.css', 'manifest.js'], // 自定义内联静态资源
