@@ -99,7 +99,7 @@ const htmlConf = (page = '', pathname = 'app') => {
     inject: true, // js插入位置
     chunksSortMode: 'dependency',
     chunks: ['manifest', 'vendor', pathname],
-    hash: true,
+    hash: false,
     minify: {
       removeComments: true,
       collapseWhitespace: true,

@@ -1,6 +1,6 @@
 {
   "name": "zz-webpack-react",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "webpack打包工具React版",
   "main": "index.js",
   "bin": {
