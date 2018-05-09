@@ -4,14 +4,11 @@ const mixin = require('assign-deep')
 const config = global._WEBPACK_CONFIG
 const resolve =  global._WEBPACK_RESOLVE
 const utils = require('./utils')
-const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
+const entries = utils.getEntry([resolve('src/pages/**/*.jsx'), resolve('src/pages/**/*.tsx')]); // 获得多页面的入口js文件
 const pages = utils.getEntry([resolve('template/**/*.ejs'), resolve('template/**/*.html'), resolve('template/**/*.htm')]);
-
-// 多页面应用情况下删除入口文件
 if(pages['index'] && entries['index']) {
   delete config.base.entry['app'];
 }
-
 module.exports = {
     context:resolve(),
     entry: mixin(config.base.entry, entries),
@@ -23,9 +20,13 @@ module.exports = {
         : config.dev.assetsPublicPath
     },
     resolve: {
-      extensions: ['.jsx', '.js', '.json', '.scss'],
+      extensions: ['.jsx', '.js', '.json', '.scss','.ts','.tsx'],
       alias: {
-        '@models': resolve('build/models')
+        '@models': resolve('build/models'),
+        '@src': resolve('src'),
+        '@components': resolve('src/components'),
+        '@redux': resolve('src/redux'),
+        '@lib': resolve('src/lib'),
       }
     },
     module: {
@@ -73,6 +74,17 @@ module.exports = {
         {
           test: /\.ejs$/, 
           loader: "ejs-compiled-loader"
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'tslint-loader',
+          exclude: /node_modules/,
+          enforce: 'pre',
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'awesome-typescript-loader',
+          enforce: 'pre'
         }
       ]
     }

@@ -14,19 +14,19 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
+const entries = utils.getEntry([resolve('src/pages/**/*.jsx'), resolve('src/pages/**/*.tsx')]); // 获得多页面的入口js文件
 const pages = utils.getEntry([resolve('template/**/*.ejs'), resolve('template/**/*.html'), resolve('template/**/*.htm')]);
 
 const env =  require('../config/prod.env')
 const webpackConfig = {
   module: {
     rules: utils.styleLoaders({
-      sourceMap: config.build.productionSourceMap,
+      sourceMap: config.build.cssSourceMap || false,
       extract: config.base.cssExtract || false,
       usePostCSS: true
     })
   },
-  devtool: config.build.productionSourceMap ? config.build.devtool : false,
+  devtool: config.build.jsSourceMap || config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
@@ -61,22 +61,35 @@ const webpackConfig = {
         // 提取出出现多次但是没有定义成变量去引用的静态值
         reduce_vars: true,
       },
-      sourceMap: config.build.productionSourceMap
+      sourceMap: config.build.jsSourceMap || config.build.productionSourceMap
     }),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh|en/),
+    // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       allChunks: false,
     }),
     new OptimizeCSSPlugin({
-      cssProcessorOptions: config.build.productionSourceMap
-      ? { safe: true, map: { inline: false } }
-      : { safe: true }
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano')({ zindex: false }),
+      cssProcessorOptions: {
+        safe: true,
+        map: { inline: false },
+        discardComments: { 
+          removeAll: true
+        }
+      }
     }),
     new webpack.HashedModuleIdsPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin()
+    new webpack.optimize.ModuleConcatenationPlugin(),
   ]
 }
+
+// js处理
+webpackConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+  name: ['manifest', 'vendor'].reverse(),
+  minChunks:Infinity
+}));
 
 const inline = config.build.inline
 let regRxpArr = []
@@ -89,6 +102,7 @@ if(inline) {
   if(regRxpArr.length) {
     inlineRegExp = new RegExp(`${regRxpArr.join('|')}$`)
   }
+  // console.log(inlineRegExp);
 }
 
 const htmlConf = (page = '', pathname = 'app') => {
@@ -106,6 +120,14 @@ const htmlConf = (page = '', pathname = 'app') => {
       removeAttributeQuotes: true
     }
   };
+  // chunk公共样式提取
+  webpackConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: pathname,
+    // filename:'[name].bundle.js',
+    async: `${pathname}-async`,
+    children: true,
+    minChunks: 2
+  }));
   return conf;
 }
 
@@ -120,7 +142,7 @@ Object.keys(pages).every(v => {
 })
 if(entries && entriesKeys.length && mutiPage) {
     for (let [pathname, page] of utils.entries(pages)) {
-      if (exists(resolve(`src/pages/${pathname}.jsx`))) {
+      if (exists(resolve(`src/pages/${pathname}.jsx`)) || exists(resolve(`src/pages/${pathname}.tsx`))) {
         webpackConfig.plugins.push(new HtmlWebpackPlugin(htmlConf(page, pathname)));
       }
     }
@@ -130,44 +152,7 @@ if(entries && entriesKeys.length && mutiPage) {
 // 内联资源
 webpackConfig.plugins.push(new HtmlWebpackInlineSourcePlugin());
 
-// js处理
-webpackConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-  name: ['manifest', 'vendor'].reverse(),
-  minChunks:Infinity
-}));
-
-// chunk公共样式提取
-// console.log(pages);
-webpackConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-  name: Object.keys(pages).length ? Object.keys(pages) : 'app',
-  // filename:'[name].bundle.js',
-  async: 'vendor-async',
-  children: true,
-  minChunks: 2
-}));
-
-// 性能埋点
-// webpackConfig.plugins.push(new PerfWebpackPlugin());
-
-// 开启性能限制
-if(config.build.performance) {
-  webpackConfig.performance = {
-    hints: 'error',
-    maxEntrypointSize: 400000,
-    maxAssetSize: 300000
-  }
-}
-
-// 开启图片压缩
-if (config.build.imagemin) {
-  const ImageminPlugin = require('imagemin-webpack-plugin').default
-  webpackConfig.plugins.push(
-    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i })
-  )
-}
-
 if(exists(resolve('static'))) {
-  // copy custom static assets
   webpackConfig.plugins.push(
     new CopyWebpackPlugin([
       {
@@ -177,6 +162,16 @@ if(exists(resolve('static'))) {
       }
     ])
   )
+}
+
+// 开启性能限制
+const performance = config.build.performance;
+if(performance) {
+  webpackConfig.performance = {
+    hints: 'error',
+    maxEntrypointSize: (typeof performance === 'object' && performance.maxEntrypointSize) || 400000,
+    maxAssetSize: (typeof performance === 'object' && performance.maxAssetSize) || 300000
+  }
 }
 
 if (config.build.productionGzip) {

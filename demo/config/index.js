@@ -4,7 +4,7 @@ module.exports = {
     base:{
       // 入口文件配置
       entry:{
-        vendor:['react', 'react-dom', 'react-router-dom', 'history'],
+        vendor:[path.join(__dirname,'../', 'src/lib/polyfill'), 'react', 'react-dom'],
         app: path.join(__dirname,'../', 'src/app')
       },
       cssExtract: false
@@ -24,9 +24,9 @@ module.exports = {
       web: 'webserver',
       staticCdn: 'img.static.com.cn', // 静态资源域名
       bundleAnalyzerReport: false, // 开启代码分析报告功能，默认关闭，true/false，也可使用命令 npm run build --report
-      productionSourceMap: true,   // 开启生成sourcemap功能，true/false
+      cssSourceMap: false,   // 开启生成sourcemap功能，true/false
+      jsSourceMap: true,
       assetsRoot: path.resolve(__dirname, '../dist'), // 打包生成的文件存放目录
-      imagemin: true, // 开启图片压缩， true/false
       inline:['app.css', 'manifest.js'], // 自定义内联静态资源
       performance: true // 性能限制，首次加载js+css不能超过400k, 单个文件大小不超过: 300k
     }

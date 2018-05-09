@@ -108,19 +108,3 @@ body{
 :global(.fn-right){
   float:right;
 }
-
-:global(.btn){
-  font-size:pxtorem(28px);
-  color:$white;
-  padding:pxtorem(13px) pxtorem(24px);
-  box-sizing: border-box;
-  border-radius: pxtorem(10px);
-  background-color:$red;
-  &:global(.btn-full){
-    display:block;
-    text-align:center;
-  }
-  &:global(.btn-disable){
-    color:rgba($white, .2);
-  }
-}

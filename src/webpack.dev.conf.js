@@ -10,9 +10,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const vConsolePlugin = require('vconsole-webpack-plugin')
 const resolve = global._WEBPACK_RESOLVE
-const entries = utils.getEntry([resolve('src/pages/**/*.jsx')]); // 获得多页面的入口js文件
+const entries = utils.getEntry([resolve('src/pages/**/*.jsx'), resolve('src/pages/**/*.tsx')]); // 获得多页面的入口js文件
 const pages = utils.getEntry([resolve('template/**/*.ejs'), resolve('template/**/*.html'), resolve('template/**/*.htm')]);
-
 let webpackDevConfig = {
   module: {
     rules: utils.styleLoaders({
@@ -21,7 +20,10 @@ let webpackDevConfig = {
       extract: config.base.cssExtract || false
     })
   },
+  // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
+
+  // these devServer options should be customized in /config/index.js
   devServer: {
     clientLogLevel: 'warning',
     historyApiFallback: true,
@@ -49,8 +51,9 @@ let webpackDevConfig = {
       'process.env': require('../config/dev.env')
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
+    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
+    // https://github.com/ampedandwired/html-webpack-plugin
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       allChunks: false,
@@ -62,6 +65,7 @@ let webpackDevConfig = {
 }
 
 const htmlConf = (page = '', pathname = 'app') => {
+  // console.log(page);
   const conf = {
     filename: `${pathname === 'app' ? 'index' : pathname}.html`,
     template: page || (exists(resolve('index.ejs')) ? resolve('index.ejs') : resolve('index.html')), // 模板路径
@@ -71,6 +75,7 @@ const htmlConf = (page = '', pathname = 'app') => {
   };
   return conf;
 }
+
 let mutiPage = false;
 const entriesKeys = Object.keys(entries);
 Object.keys(pages).every(v => {
@@ -82,7 +87,7 @@ Object.keys(pages).every(v => {
 })
 if(entries && entriesKeys.length && mutiPage) {
     for (let [pathname, page] of utils.entries(pages)) {
-      if (exists(resolve(`src/pages/${pathname}.jsx`))) {
+      if (exists(resolve(`src/pages/${pathname}.jsx`)) || exists(resolve(`src/pages/${pathname}.tsx`))) {
         webpackDevConfig.plugins.push(new HtmlWebpackPlugin(htmlConf(page, pathname)));
       }
     }
