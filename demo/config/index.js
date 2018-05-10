@@ -7,7 +7,9 @@ module.exports = {
         vendor:[path.join(__dirname,'../', 'src/lib/polyfill'), 'react', 'react-dom'],
         app: path.join(__dirname,'../', 'src/app')
       },
-      cssExtract: false
+      externals: {}, // 排除部分第三方组件不打包
+      cssExtract: false,
+      cssModule: false // css module自动关闭，部分组件库使用此功能会加载不了样式，例如antd
     },
     // 开发模式配置
     dev:{
@@ -22,7 +24,7 @@ module.exports = {
     },
     build:{
       web: 'webserver',
-      staticCdn: 'img.static.com.cn', // 静态资源域名
+      assetsPublicPath: 'https://img.static.com.cn/', // 静态资源路径
       bundleAnalyzerReport: false, // 开启代码分析报告功能，默认关闭，true/false，也可使用命令 npm run build --report
       cssSourceMap: false,   // 开启生成sourcemap功能，true/false
       jsSourceMap: true,

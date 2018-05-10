@@ -18,7 +18,7 @@ exports.cssLoaders = function (options) {
   const cssLoader = {
     loader: 'css-loader',
     options: {
-      modules: true,
+      modules: config.base.cssModule || false,
       localIdentName: '[name]_[local]_[hash:base64:5]',
       sourceMap: options.sourceMap
     }

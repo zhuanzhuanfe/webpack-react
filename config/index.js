@@ -11,7 +11,9 @@ module.exports = (config) => {
         vendor:['react', 'react-dom'],
         app: resolve('src/app')
       },
-      cssExtract:false
+      externals: {}, // 排除部分第三方组件不打包
+      cssExtract:false,
+      cssModule: false // css module自动关闭，部分组件库使用此功能会加载不了样式，例如antd
     }, config.base || {}),
     dev: mixin({
       https: false,
@@ -38,7 +40,9 @@ module.exports = (config) => {
       assetsRoot: resolve('dist'),
       assetsSubDirectory: 'static',
       assetsPublicPath: `https://${config.build.staticCdn || config.dev.host + ':' + config.dev.port}`,
-      productionSourceMap: true,
+      // productionSourceMap: true,
+      cssSourceMap: false,
+      jsSourceMap: true,
       devtool: '#source-map',
       productionGzip: false,
       productionGzipExtensions: ['js', 'css'],

@@ -48,7 +48,6 @@ $ node_modules/zz-webpack-react/bin/start
 $ webpack-dev-server --inline --progress --disable-host-check --public --config webpack-react/build/dev.js
 
 # build命令, 如果需要设置环境变量为：NODE_ENV=production，推荐使用cross-env，可以兼容mac和windows
-$ node webpack-react/build/build.js
 $ cross-env NODE_ENV=production node webpack-react/build/build.js
 ````
 ### 初始化-新项目
@@ -86,6 +85,8 @@ module.exports = {
         vendor:['react', 'react-dom'],
         app: path.join(process.cwd(), 'src/app')
       },
+      externals: {}, // 排除部分第三方组件不打包
+      cssModule: false, // css module自动关闭，部分组件库使用此功能会加载不了样式，例如antd
       cssExtract: false // 提取css为单独的css文件，或者跟随chunk代码自动嵌入 <head>中，默认false，跟随chunk
     },
     // 开发模式配置
@@ -102,9 +103,10 @@ module.exports = {
     // 构建模式配置
     build:{
       web: "webserver", // 存放所有的html文件
-      staticCdn: 'img.static.com.cn', // 静态资源域名
+      assetsPublicPath: 'https://img.static.com.cn/', // 静态资源路径
       bundleAnalyzerReport: false, // 开启代码分析报告功能，true/false，也可使用命令 npm run build --report
-      productionSourceMap: true,   // 开启生成sourcemap功能，true/false
+      cssSourceMap: false, // 控制css的sourcemap
+      jsSourceMap: true, // 控制js的sourcemap
       assetsRoot: path.resolve(process.cwd(), 'dist'), // 打包生成的文件存放目录
       imagemin: true, // 开启图片压缩， true/false
       inline:['app.css', 'manifest.js'], // 自定义内联静态资源
