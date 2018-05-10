@@ -21,13 +21,13 @@ module.exports = {
     },
     resolve: {
       extensions: ['.jsx', '.js', '.json', '.scss','.ts','.tsx'],
-      alias: {
+      alias: Object.assign({
         '@models': resolve('build/models'),
         '@src': resolve('src'),
         '@components': resolve('src/components'),
         '@redux': resolve('src/redux'),
         '@lib': resolve('src/lib'),
-      }
+      }, config.base.alias)
     },
     module: {
       rules: [

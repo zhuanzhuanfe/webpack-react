@@ -1,4 +1,4 @@
-# zz-webpack-react ![version](https://img.shields.io/badge/version-1.1.1-blue.svg?style=flat-square)
+# zz-webpack-react ![version](https://img.shields.io/badge/version-1.1.3-blue.svg?style=flat-square)
 > react版`webpack`打包工具，主要提供公共`webpack`配置，快速接入最新最优`webpack`配置
 
 ## 前言
@@ -87,7 +87,8 @@ module.exports = {
       },
       externals: {}, // 排除部分第三方组件不打包
       cssModule: false, // css module自动关闭，部分组件库使用此功能会加载不了样式，例如antd
-      cssExtract: false // 提取css为单独的css文件，或者跟随chunk代码自动嵌入 <head>中，默认false，跟随chunk
+      cssExtract: false, // 提取css为单独的css文件，或者跟随chunk代码自动嵌入 <head>中，默认false，跟随chunk
+      alias: {} // 设置别名
     },
     // 开发模式配置
     dev:{
@@ -108,7 +109,6 @@ module.exports = {
       cssSourceMap: false, // 控制css的sourcemap
       jsSourceMap: true, // 控制js的sourcemap
       assetsRoot: path.resolve(process.cwd(), 'dist'), // 打包生成的文件存放目录
-      imagemin: true, // 开启图片压缩， true/false
       inline:['app.css', 'manifest.js'], // 自定义内联静态资源
       performance: true // 性能限制，首次加载js+css不能超过400k, 单个文件大小不超过: 300k
     }

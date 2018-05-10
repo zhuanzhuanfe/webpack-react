@@ -9,7 +9,9 @@
           "Firefox ESR", 
           "not ie < 9"
         ]
-      }
+      },
+      "debug": false,
+      "useBuiltIns": true
     }],
     "react",
     "stage-2"
