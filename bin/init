@@ -20,5 +20,6 @@ cpFile(path.join(pwd, 'node_modules', 'zz-webpack-react', 'demo'), path.join(pwd
   console.log(`# ${chalk.green('开始运行：')}`);
   console.log();
   console.log(`   cd webpack-react-demo`);
+  console.log(`   npm install`);
   console.log(`   npm run dev`);
 });
