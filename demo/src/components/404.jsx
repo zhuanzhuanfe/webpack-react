@@ -6,14 +6,14 @@ class NotFount extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: 'this is a 404 page!',
+      name: '404页面',
     };
   }
   render() {
     return (
       <div>
         <div className="match-error">
-          <p>URL路径非法，请检查</p>
+          <p>{this.state.name}</p>
           <Link to="/home">回首页</Link>
         </div>
       </div>

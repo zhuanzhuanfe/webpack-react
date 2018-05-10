@@ -1,12 +1,12 @@
 {
-  "name": "示例",
-  "version": "1.0.0",
+  "name": "demo",
+  "version": "1.0.2",
   "description": "webpack打包工具模版示例",
   "main": "index.js",
   "scripts": {
     "start": "npm run dev",
-    "dev": "webpack-dev-server --inline --public --config build/dev.js",
-    "build": "node build/build.js"
+    "dev": "webpack-dev-server --inline --progress --public --config build/dev.js",
+    "build": "cross-env NODE_ENV=production node build/build.js"
   },
   "keywords": [
     "react"
