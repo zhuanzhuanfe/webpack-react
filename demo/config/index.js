@@ -20,7 +20,8 @@ module.exports = {
       proxyTable: {}, // 代理
       autoOpenBrowser: true, // 启动时自动打开浏览器，默认开启，true/false
       useEslint: true , // 开启eslint验证，配置模版时选择开启或关闭，true/false
-      vconsole: true // 开启调试模式，默认关闭，true/false
+      vconsole: true, // 开启调试模式，默认关闭，true/false
+      merge:{}
     },
     build:{
       web: 'webserver',
@@ -30,6 +31,7 @@ module.exports = {
       jsSourceMap: true,
       assetsRoot: path.resolve(__dirname, '../dist'), // 打包生成的文件存放目录
       inline:['app.css', 'manifest.js'], // 自定义内联静态资源
-      performance: true // 性能限制，首次加载js+css不能超过400k, 单个文件大小不超过: 300k
+      performance: true, // 性能限制，首次加载js+css不能超过400k, 单个文件大小不超过: 300k
+      merge:{}
     }
 }

@@ -18,7 +18,7 @@ const entries = utils.getEntry([resolve('src/pages/**/*.jsx'), resolve('src/page
 const pages = utils.getEntry([resolve('template/**/*.ejs'), resolve('template/**/*.html'), resolve('template/**/*.htm')]);
 
 const env =  require('../config/prod.env')
-const webpackConfig = {
+let webpackConfig = {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.cssSourceMap || false,
@@ -196,6 +196,10 @@ if (config.build.bundleAnalyzerReport) {
   webpackConfig.plugins.push(new BundleAnalyzerPlugin({
     analyzerPort: Math.floor(Math.random()*999)+8000
   }))
+}
+
+if (Object.keys(config.build.merge).length) {
+  webpackConfig = merge(webpackConfig, config.build.merge);
 }
 
 module.exports = webpackConfig;
