@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 const mixin = require('assign-deep')
+const merge = require('webpack-merge')
 const config = global._WEBPACK_CONFIG
 const resolve =  global._WEBPACK_RESOLVE
 const utils = require('./utils')
